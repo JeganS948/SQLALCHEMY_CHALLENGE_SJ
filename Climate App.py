@@ -59,6 +59,19 @@ def welcome():
 </html>
 """
 
+# Precipitation Route
+@app.route("/api/v1.0/precipitation")
+def precipitation():
+        # Convert the Query Results to a Dictionary Using `date` as the Key and `prcp` as the Value
+        one_year_ago = dt.date(2017,8,23) - dt.timedelta(days=365)
+        prcp_data = session.query(Measurement.date, Measurement.prcp).\
+                filter(Measurement.date >= one_year_ago).\
+                order_by(Measurement.date).all()
+        # Convert List of Tuples into a Dictionary
+        prcp_data_list = dict(prcp_data)
+        # Return JSON Representation of Dictionary
+        return jsonify(prcp_data_list)
+
 # Define Main Behavior
 if __name__ == '__main__':
     app.run(debug=True)
