@@ -78,9 +78,22 @@ def stations():
         # Return a JSON List of Stations From the Dataset
         stations_all = session.query(Station.station, Station.name).all()
         # Convert List of Tuples Into Normal List
-        station_list = list(stations_all)
+        station_list = list(np.ravel(stations_all))
         # Return a JSON List of Stations from the Dataset
-        return jsonify(list(np.ravel(station_list)))
+        return jsonify(station_list)
+
+# TOBs Route
+@app.route("/api/v1.0/tobs")
+def tobs():
+        # Query for the Dates and Temperature Observations from a Year from the Last Data Point
+        one_year_ago = dt.date(2017,8,23) - dt.timedelta(days=365)
+        tobs_data = session.query(Measurement.date, Measurement.tobs).\
+                filter(Measurement.date >= one_year_ago).\
+                order_by(Measurement.date).all()
+        # Convert List of Tuples Into Normal List
+        tobs_data_list = list(np.ravel(tobs_data))
+        # Return JSON List of Temperature Observations (tobs) for the Previous Year
+        return jsonify(tobs_data_list)
 
 # Define Main Behavior
 if __name__ == '__main__':
