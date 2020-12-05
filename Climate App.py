@@ -72,6 +72,16 @@ def precipitation():
         # Return JSON Representation of Dictionary
         return jsonify(prcp_data_list)
 
+# Station Route
+@app.route("/api/v1.0/stations")
+def stations():
+        # Return a JSON List of Stations From the Dataset
+        stations_all = session.query(Station.station, Station.name).all()
+        # Convert List of Tuples Into Normal List
+        station_list = list(stations_all)
+        # Return a JSON List of Stations from the Dataset
+        return jsonify(list(np.ravel(station_list)))
+
 # Define Main Behavior
 if __name__ == '__main__':
     app.run(debug=True)
