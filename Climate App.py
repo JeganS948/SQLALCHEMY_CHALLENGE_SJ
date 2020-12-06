@@ -111,7 +111,7 @@ def tobs():
 @app.route("/api/v1.0/<start>")
 def start_day(start):
         session = Session(engine)
-        start_day = session.query(Measurement.date, func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
+        start_day = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
                 filter(Measurement.date >= start).all()
         session.close()
         # Convert List of Tuples Into Normal List
