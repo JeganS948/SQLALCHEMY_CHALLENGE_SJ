@@ -124,7 +124,7 @@ def start_day(start):
 @app.route("/api/v1.0/<start>/<end>")
 def start_end_day(start, end):
         session = Session(engine)
-        start_end_day = session.query(Measurement.date, func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
+        start_end_day = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
                 filter(Measurement.date >= start).\
                 filter(Measurement.date <= end).all()
         session.close()
